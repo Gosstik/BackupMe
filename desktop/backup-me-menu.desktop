@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=BackupMe (Menu)
+Comment=
+Keywords=BackupMe
+Terminal=true
+Type=Application
+Icon=disk-utility-app
+Categories=GTK;Development;
+StartupNotify=false
+# Change Exec to absolute (changed by install.sh automatically)
+Exec=~/BackupMe/gui_apps/menu.sh

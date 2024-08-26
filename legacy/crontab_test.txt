@@ -1,0 +1,33 @@
+# crontab -e
+SHELL=/bin/bash
+#MAILTO=goshikvash@gmail.com
+MAILTO=""
+PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
+
+# For details see man 4 crontabs
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+
+ENV_IS_CRON_JOB="TRUE"
+#@reboot root ENV_IS_CRON_JOB="TRUE" /etc/cron.reboot/backup_me-pc_startup | tee /mnt/OSbackups/BackupMe/cron_log.d/log.$(date +"\%Y-\%m-\%d_\%H-\%M-\%S").txt
+#* * * * * root gnome-terminal -- /bin/sh -c '/etc/cron.reboot/backup_me-pc_startup | tee /home/gostik/Code/BackupMe/cron_logs.d/$(date +"\%Y-\%m-\%d_\%H-\%M-\%S").log'
+#* * * * * root gnome-terminal -- /bin/bash -c '/home/gostik/Code/BackupMe/cron_test.sh; sleep 10; exec bash'
+#* * * * * gostik env DISPLAY=:1 gnome-terminal -- /bin/bash -c 'echo test; sleep 5; exec bash; /home/gostik/Code/BackupMe/cron_test.sh'
+#* * * * * gostik env DISPLAY=:1 gnome-terminal -- /bin/bash -c '/home/gostik/Code/BackupMe/cron/pc_startup.sh'
+
+* * * * * root DISPLAY=:1 /home/gostik/Code/BackupMe/cron/pc_startup.sh 2>&1 | tee /home/gostik/Code/BackupMe/cron_logs.d/$(date +"\%Y-\%m-\%d_\%H-\%M-\%S").log
+#* * * * * root DISPLAY=:1 bash -c 'su -c "xhost +si:localuser:root" gostik; gnome-terminal -- /home/gostik/Code/BackupMe/cron/pc_startup.sh 2>&1 | tee /home/gostik/Code/BackupMe/cron_logs.d/$(date +"\%Y-\%m-\%d_\%H-\%M-\%S").log'
+#* * * * * root DISPLAY=:1 /home/gostik/Code/BackupMe/cron/clear_cron_logs.sh 2>&1 | tee /home/gostik/Code/BackupMe/cron_logs.d/clear_log_script/$(date +"\%Y-\%m-\%d_\%H-\%M-\%S").log
+
+#* * * * * root env DISPLAY=:1 /home/gostik/Code/BackupMe/cron_test.sh
+
+#* * * * * root "echo hello!"
+#* * * * * root env DISPLAY=:1 gnome-terminal -- /bin/sh -c 'echo "Hello"; sleep 5'
+#* * * * * gostik env DISPLAY=:1 nautilus

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Name=BackupMe (Create Backup)
+Comment=
+Keywords=BackupMe
+Terminal=true
+Type=Application
+Icon=backups-app
+Categories=GTK;Development;
+StartupNotify=false
+# Change Exec to absolute (changed by install.sh automatically)
+Exec=~/BackupMe/gui_apps/create_backup.sh
