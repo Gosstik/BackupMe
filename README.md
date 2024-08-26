@@ -5,6 +5,7 @@ Backup utility for Ubuntu distributions. Backups system with `TimeShift` and `Ho
 ## Dependencies
 
 They are installed automatically with `install.sh`.
+
 ```bash
 # System backup
 sudo apt-get install timeshift
@@ -19,19 +20,41 @@ sudo apt-get install alacarte
 sudo apt-get install cron
 ```
 
+
 ## Installation
 
-After cloning repo, you have to (order is extremely important):
-1) Change `.env` file as you wish.
-2) Run `sudo ./install.sh`. There will be interactive part --- always choose `yes`, `ok` or press `enter`.
-
 **NOTE**: There must be **no spaces** in path to directories for backup and that storing backups.
+
+After cloning repo, you have to (order is extremely important):
+
+1) Change `.env` file as you wish.
+
+2) Mount `OSbackups` folder in `/etc/fstab`:
+
+    ```bash
+    sudo vim /etc/fstab
+    ```
+
+    ```text
+    ### OSbackups
+    /dev/sdb1 /mnt/OSbackups ext4 default 0 2
+    ```
+
+    ```bash
+    sudo mount -a
+    ```
+
+3) Run `sudo ./install.sh`. There will be interactive part --- always choose `yes`, `ok` or press `enter`.
+
+4) Open `Timeshift` and choose partition where to save backup.
 
 
 ## Recovery
 
 ### From Live CD/USB
+
 - System: mount partition with `timeshift` backups and run:
+
 ```bash
 sudo apt-get install timeshift
 # For further actions it is better to use GUI.
@@ -45,6 +68,7 @@ sudo timeshift --restore \
 ```
 
 - Home.
+
 ```bash
 # Find partitions with backup (<BACKUP_DEV>) and target system (<SYSTEM_DEV>)
 sudo -s
@@ -65,13 +89,15 @@ cat "${LATEST}_rsync_cmd.log" # output recovery CMD
 
 **NOTE:** New files, that have appeared in `$USER` directory are not deleted during recovery. You may have to delete them manually in case they are not compatible with backup content.
 
-# Debug
+
+## Debug
 
 To see error before terminal is closed, uncomment `fn_exit_on_enter` in files in `cron` and `gui_apps` dirs.
 
-## Cron
+### Cron
 
 **NOTE:** `crontab -u root -l` does not list jobs inside `/etc/cron.d`. For that purpose it is comfortable to use `cronitor list`:
+
 ```bash
 # Installation
 wget https://cronitor.io/dl/linux_amd64.tar.gz
@@ -83,6 +109,7 @@ cronitor list
 ```
 
 Crontab logs and active jobs:
+
 ```bash
 # List cron jobs. Jobs inside /etc/cron.d are not displayed!!!
 crontab -u root -l
@@ -106,20 +133,22 @@ Location of cron files you can see in `install.sh`.
 
 - from `/var/log/syslog`: [No MTA installed, discarding output](https://cronitor.io/guides/no-mta-installed-discarding-output). It means that `cron` is unable to send output from your script by email.
 - In newest systems it is forbidden to run GUI applications as a root. Therefore, in cron job we must explicitly enable it and disable with the help of that commands:
+
 ```bash
 su -c 'xhost +si:localuser:root' gostik # enable run GUI as root
 su -c 'xhost -si:localuser:root' gostik # disable run GUI as root
 ```
+
 - `find: ‘/home/gostik/.gvfs’: Permission denied`: [askubuntu.com](https://askubuntu.com/questions/524667/ls-cannot-access-gvfs-permission-denied)
 - `xhost:  unable to open display ":1"`. It is occurred when system is loaded, but user has not yet entered his password. Cron job waits for 5 minutes and then fails.
 
-# TODO
+## TODO
 
 - install on VM
 - test recover on `gostik` dir
-- Progress of `rsync` with `yad`: https://serverfault.com/questions/219013/showing-total-progress-in-rsync-is-it-possible
+- Progress of `rsync` with `yad`: <https://serverfault.com/questions/219013/showing-total-progress-in-rsync-is-it-possible>
 
-# Handy
+## Handy
 
 - backup-before-shutdown idea: [askubuntu.com](https://askubuntu.com/questions/1323632/backup-before-shutdown)
 - GUI alternatives on [stackoverflow](https://stackoverflow.com/questions/7035/how-to-show-a-gui-message-box-from-a-bash-script-in-linux)
@@ -129,6 +158,7 @@ su -c 'xhost -si:localuser:root' gostik # disable run GUI as root
 - In short about `cron`: [opensource.com](https://opensource.com/article/17/11/how-use-cron-linux)
 - Enable Hibernate on Ubuntu: [askubuntu.com](https://askubuntu.com/a/385316)
 - It is extremely poor to run GUI applications with `sudo`.
+
 ```bash
 # Nautilus for sudo usage
 sudo apt install nautilus-admin
@@ -140,7 +170,7 @@ find ~ -user root
 sudo chown -R gostik /home/gostik
 ```
 
-# Bugs
+## Bugs
 
 - If there are troubles with file permissions, try to add that file to `{PROJECT_DIR}/data/home-excludes.txt`. If it does not resolve a problem, uncomment `set +o errexit` in `backup_creator.sh`.
 - `Authorization required, but no authorization protocol specified` --- try to manually run `${PROJECT_DIR}/cron/pc_startup.sh`

@@ -94,6 +94,9 @@ fn_get_dir_columns() {
 #    SRC_DIR="/home/gostik"
     SRC_SLASHED_NAME="${SRC_DIR//\//_}"
     BACKUP_DIR="${ENV_BACKUPS_STORAGE_DIR}/${SRC_SLASHED_NAME}"
+    if [ ! -d "${BACKUP_DIR}" ]; then
+      continue
+    fi
     CUR_RES=$(find "${BACKUP_DIR}/" -maxdepth 1 -type d -name "${FIND_PATTERN}" | sort -r)
 
     NEW_RES=""
@@ -196,7 +199,8 @@ fn_draw_menu_window() {
         --text="Something" \
         --text="${TXT}" \
         --button="Create <b>full</b> backup now"!clock:2 \
-        --button="Remove <b>incomplete</b> backups"!clock:0 \
+        --button="Remove <b>incomplete</b> backups"!computerjanitor:0 \
+        --button="<b>Power off</b>"!boot:3 \
         --button="${CANCEL_BUTTON_NAME}"!gtk-cancel:1 \
         --key=${MENU_KEY} \
         --tab="${TAB_ARR[1]}" --tab="${TAB_ARR[2]}" --tab="${TAB_ARR[3]}"

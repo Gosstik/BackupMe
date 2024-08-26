@@ -15,6 +15,9 @@ source "${PROJECT_DIR}/util.sh"
 fn_request_sudo
 fn_import_env_variables
 
+mkdir -p "${ENV_BACKUPS_STORAGE_DIR}"
+mkdir -p "${ENV_TIMESHIFT_BACKUP_DIR}"
+
 ################################################################################
 
 # Install dependencies
@@ -22,10 +25,10 @@ fn_import_env_variables
 echo "Installing dependencies..."
 
 apt-get update
-apt-get install timeshift \
-                yad \
-                alacarte \
-                cron
+apt-get install -y timeshift \
+                   yad \
+                   alacarte \
+                   cron
 
 echo "Dependencies installed!"
 
@@ -86,7 +89,7 @@ echo "ENV_DISPLAY=${DISPLAY}" > ".local.env"
 
 # Reinstalling gnome-terminal and locales (REQUIRES REBOOT!!!)
 
-echo "Reinstalling gnome-terminal and locales"
+echo "!!!!!!!! Reinstalling gnome-terminal and locales !!!!!!!!"
 
 sudo apt-get install -y dconf-cli
 
@@ -100,6 +103,8 @@ sudo locale-gen --purge
 sudo dpkg-reconfigure locales
 
 ################################################################################
+
+sudo apt-get autoremove -y
 
 read -r -n 1 -p "To finish installation, reboot is required. Reboot now? (print 'y' to accept): "
 if [ -n "${REPLY}" ] && [ "${REPLY}" = "y" ]; then

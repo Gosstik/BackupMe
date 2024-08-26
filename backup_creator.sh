@@ -47,6 +47,7 @@ fi
 # Setting variables
 
 BACKUP_DIR="${ENV_BACKUPS_STORAGE_DIR}/${SRC_SLASHED_NAME}"
+mkdir -p "${BACKUP_DIR}"
 LATEST_LINK="${BACKUP_DIR}/latest"
 
 # DEST_DIR

@@ -220,10 +220,14 @@ export -f fn_remove_extra_timeshift_backups
 ################################################################################
 
 fn_get_all_incomplete_dirs() {
+  local INCOMPLETE_DIRS=""
   for SRC_DIR in ${ENV_DIRS_TO_BACKUP}; do
 #    SRC_DIR="/home/gostik"
     SRC_SLASHED_NAME="${SRC_DIR//\//_}"
     ALL_HOME_BACKUPS_DIR="${ENV_BACKUPS_STORAGE_DIR}/${SRC_SLASHED_NAME}"
+    if [ ! -d "${ALL_HOME_BACKUPS_DIR}" ]; then
+      continue
+    fi
     INCOMPLETE_DIRS+=$(find "${ALL_HOME_BACKUPS_DIR}/" -maxdepth 1 -type d -name "????-??-??_??-??-??_INCOMPLETE" | sort -r)
     if [ -n "${INCOMPLETE_DIRS}" ]; then
       INCOMPLETE_DIRS+=$'\n'
@@ -334,7 +338,7 @@ fn_backup_system() {
   # Create new backup
   TIMESHIFT_COMMENT=$(date +"%d %b, %Y")
   # '--tags O' does not work, but it is so by default
-  timeshift --rsync --create --comments "${TIMESHIFT_COMMENT}" --yes
+  timeshift --scripted --rsync --create --comments "${TIMESHIFT_COMMENT}" --yes
   fn_remove_extra_timeshift_backups
 
   echo "TimeShift backup created successfully! (fn_backup_system)"
@@ -436,8 +440,8 @@ fn_wait_for_display_becomes_available() {
   while [ -z "${DISPLAY_IS_READY}" ]; do
     su -c 'xhost +si:localuser:root' "${ENV_ROOT_USER}" >&/dev/null
     if [ "$?" -eq 0 ]; then
-      echo "DISPLAY became available, wait 3 seconds more and continue"
-      sleep 3
+      echo "DISPLAY became available, wait 1 second and continue"
+      sleep 1
       break
     else
       echo "DISPLAY=${DISPLAY} is unavailable, waiting..."

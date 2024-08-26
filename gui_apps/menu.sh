@@ -39,6 +39,7 @@ echo "YAD_RES='${YAD_RES}'"
 case "${YAD_RES}" in
   0) fn_remove_incomplete_backups_without_arg ;;
   2) fn_disable_sleep; fn_full_backup; fn_enable_sleep ;;
+  3) fn_power_off ;;
   1) echo "Cancel button" ;;
   252) echo "Window closed, exiting" ;;
   *) echo "Unknown command, exiting" ;;
