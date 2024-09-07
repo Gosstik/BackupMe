@@ -32,7 +32,7 @@ source "${PROJECT_DIR}/gui_util.sh"
 MSG="\\n\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t\\t<span size='x-large'>\
     <b>${ENV_APP_TITLE} Menu</b></span>"
 echo "Starting fn_draw_menu_window()..."
-YAD_RES=$(fn_draw_menu_window "${MSG}" 1 2 3 "Cancel" "Menu")
+YAD_RES=$(fn_draw_menu_window "${MSG}" 2 1 3 "Cancel" "Menu")
 echo "Finished fn_draw_menu_window()"
 echo "YAD_RES='${YAD_RES}'"
 

@@ -75,6 +75,9 @@ RSYNC_FLAGS+="--stats " # print a verbose set of statistics
 RSYNC_FLAGS+="--delete-excluded "
 RSYNC_FLAGS+="--human-readable "
 RSYNC_FLAGS+="--itemize-changes "
+#RSYNC_FLAGS+="--progress "
+#RSYNC_FLAGS+="--info=progress2 "
+#RSYNC_FLAGS+="--no-inc-recursive "
 
 RECOVERY_FLAGS="${RSYNC_FLAGS}";
 

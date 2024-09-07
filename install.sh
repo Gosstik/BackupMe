@@ -28,7 +28,8 @@ apt-get update
 apt-get install -y timeshift \
                    yad \
                    alacarte \
-                   cron
+                   cron \
+                   pv
 
 echo "Dependencies installed!"
 

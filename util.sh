@@ -348,7 +348,7 @@ export -f fn_backup_system
 fn_full_backup() {
   echo "Creating Full backup... (fn_full_backup)"
   fn_backup_system
-  fn_backup_home
+  #fn_backup_home
   echo "Full backup created successfully! (fn_full_backup)"
 }
 export -f fn_full_backup
